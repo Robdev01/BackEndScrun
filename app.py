@@ -1,60 +1,57 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
-import sqlite3
+from werkzeug.security import generate_password_hash
+from banco import inserir_usuario, buscar_usuario_por_email, check_password_hash
 
 app = Flask(__name__)
-CORS(app)
 
-DB_PATH = "usuarios.db"
+@app.route('/register', methods=['POST'])
+def registrar_usuario():
+    data = request.get_json()
 
-def get_usuario_por_email(email):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT email, senha FROM usuarios WHERE email = ?", (email,))
-    user = cursor.fetchone()
-    conn.close()
-    return user  # retorna tupla (email, senha) ou None
+    nome = data.get('nome')
+    email = data.get('email')
+    senha = data.get('senha')
+    tipo = data.get('tipo')
 
-def criar_usuario(email, senha):
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO usuarios (email, senha) VALUES (?, ?)", (email, senha))
-        conn.commit()
-        conn.close()
-        return True
-    except sqlite3.IntegrityError:
-        return False
+    if tipo not in ['admin', 'desenvolvedor']:
+        return jsonify({'erro': 'Tipo inválido. Use "admin" ou "desenvolvedor".'}), 400
 
-@app.route("/api/login", methods=["POST"])
+    if not all([nome, email, senha, tipo]):
+        return jsonify({'erro': 'Todos os campos são obrigatórios'}), 400
+
+    senha_hash = generate_password_hash(senha)
+
+    sucesso, mensagem = inserir_usuario(nome, email, senha_hash, tipo)
+    
+    if sucesso:
+        return jsonify({'mensagem': mensagem}), 201
+    else:
+        return jsonify({'erro': mensagem}), 400
+
+
+@app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
+    email = data.get('email')
+    senha = data.get('senha')
 
-    user = get_usuario_por_email(email)
+    if not all([email, senha]):
+        return jsonify({'erro': 'Email e senha são obrigatórios'}), 400
 
-    if user and user[1] == password:
-        return jsonify({"success": True, "message": "Login realizado com sucesso!"})
-    else:
-        return jsonify({"success": False, "message": "Credenciais inválidas."}), 401
+    usuario = buscar_usuario_por_email(email)
+    
+    if not usuario:
+        return jsonify({'erro': 'Usuário não encontrado'}), 404
 
-@app.route("/api/register", methods=["POST"])
-def register():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
+    id, nome, email_db, senha_db, tipo = usuario
 
-    if not email or not password:
-        return jsonify({"success": False, "message": "Email e senha são obrigatórios."}), 400
+    if not check_password_hash(senha_db, senha):
+        return jsonify({'erro': 'Senha incorreta'}), 401
 
-    if get_usuario_por_email(email):
-        return jsonify({"success": False, "message": "Usuário já existe."}), 409
-
-    if criar_usuario(email, password):
-        return jsonify({"success": True, "message": "Usuário cadastrado com sucesso!"})
-    else:
-        return jsonify({"success": False, "message": "Erro ao cadastrar usuário."}), 500
+    return jsonify({
+        'mensagem': f'Login bem-sucedido. Bem-vindo, {nome}!',
+        'tipo': tipo
+    }), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
