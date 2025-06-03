@@ -1,30 +1,21 @@
 import sqlite3
+from models import User
 
-def inserir_usuario(nome, email, senha_hash, tipo):
-    conn = sqlite3.connect("usuarios.db")
+def get_db_connection():
+    conn = sqlite3.connect('scrum.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_db_connection()
     cursor = conn.cursor()
-
-    try:
-        cursor.execute("""
-        INSERT INTO usuarios (nome, email, senha, tipo)
-        VALUES (?, ?, ?, ?)
-        """, (nome, email, senha_hash, tipo))
-
-        conn.commit()
-        return True, "Usuário inserido com sucesso"
-    except sqlite3.IntegrityError as e:
-        return False, f"Erro ao inserir: {str(e)}"
-    finally:
-        conn.close()
-
-def buscar_usuario_por_email(email):
-    conn = sqlite3.connect("usuarios.db")
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT id, nome, email, senha, tipo FROM usuarios WHERE email = ?
-    """, (email,))
-    
-    usuario = cursor.fetchone()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            name TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
     conn.close()
-    return usuario 

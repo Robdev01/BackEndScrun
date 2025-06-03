@@ -1,19 +1,5 @@
-# criar_banco.py
-import sqlite3
+from banco import init_db
 
-conn = sqlite3.connect("usuarios.db")
-cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS usuarios (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    senha TEXT NOT NULL,
-    tipo TEXT NOT NULL  -- Ex: 'admin' ou 'desenvolvedor'
-)
-""")
-
-conn.commit()
-conn.close()
-print("Banco criado com sucesso usando sqlite3!")
+if __name__ == '__main__':
+    init_db()
+    print("Banco de dados inicializado com sucesso!")

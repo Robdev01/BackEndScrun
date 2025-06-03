@@ -1,8 +1,6 @@
-# models.py
-class Usuario:
-    def __init__(self, id, nome, email, senha, tipo):
+class User:
+    def __init__(self, id, email, password, name):
         self.id = id
-        self.nome = nome
         self.email = email
-        self.senha = senha
-        self.tipo = tipo
+        self.password = password
+        self.name = name
