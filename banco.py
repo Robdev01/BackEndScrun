@@ -1,5 +1,4 @@
 import sqlite3
-from models import User
 
 def get_db_connection():
     conn = sqlite3.connect('scrum.db')
@@ -9,6 +8,8 @@ def get_db_connection():
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    # Criação da tabela users (se ainda não existir)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,5 +18,18 @@ def init_db():
             name TEXT NOT NULL
         )
     ''')
+
+    # Criação da tabela tasks
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT,
+            assignee TEXT,
+            storyPoints INTEGER,
+            status TEXT
+        )
+    ''')
+
     conn.commit()
     conn.close()
