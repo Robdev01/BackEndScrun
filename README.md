@@ -22,6 +22,7 @@ Este é um projeto de API REST simples desenvolvida com **Flask** e **SQLite**, 
 
 ## 📁 Estrutura de Arquivos
 
+```
 ├── app.py # Ponto de entrada da aplicação
 ├── banco.py # Conexão e inicialização do banco SQLite
 ├── criar_banco.py # Script para criar o banco manualmente
@@ -30,7 +31,7 @@ Este é um projeto de API REST simples desenvolvida com **Flask** e **SQLite**, 
 ├── requisition.txt # (Opcional) Exemplos de requisições
 ├── Procfile # Para deploy 
 └── README.md # Documentação do projeto
-
+```
 
 ## 🔧 Como executar
 ```
