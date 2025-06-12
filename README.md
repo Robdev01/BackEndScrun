@@ -55,9 +55,7 @@ pip install -r requisition.txt
 python criar_banco.py
 
 5. Execute o servidor
-bash
-Copiar
-Editar
+
 python app.py
 A aplicação estará disponível em: http://localhost:8080
 
