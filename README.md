@@ -1,4 +1,4 @@
-# API de Gestão de Tarefas (Flask)
+# API para o Simulador Scrum
 
 Este é um projeto de API REST simples desenvolvida com **Flask** e **SQLite**, que permite o registro de usuários, login e o gerenciamento de tarefas com autenticação básica.
 
