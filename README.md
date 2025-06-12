@@ -23,17 +23,21 @@ Este é um projeto de API REST simples desenvolvida com **Flask** e **SQLite**, 
 ## 📁 Estrutura de Arquivos
 
 ├── app.py # Ponto de entrada da aplicação
+
 ├── banco.py # Conexão e inicialização do banco SQLite
+
 ├── criar_banco.py # Script para criar o banco manualmente
+
 ├── models.py # Classes modelo (User, Task)
+
 ├── routes.py # Definição das rotas da API
+
 ├── requisition.txt # (Opcional) Exemplos de requisições
-├── Procfile # Para deploy no Heroku
+
+├── Procfile # Para deploy 
+
 └── README.md # Documentação do projeto
 
-bash
-Copiar
-Editar
 
 ## 🔧 Como executar
 ```
@@ -65,58 +69,8 @@ A aplicação estará disponível em: http://localhost:8080
 
 ```
 
-##📝 Exemplos de Requisição
-Registro
-json
-Copiar
-Editar
-POST /register
-{
-  "email": "exemplo@email.com",
-  "password": "123456",
-  "name": "Usuário Teste"
-}
-Login
-json
-Copiar
-Editar
-POST /login
-{
-  "email": "exemplo@email.com",
-  "password": "123456"
-}
-Criar Tarefa
-json
-Copiar
-Editar
-POST /tasks
-{
-  "title": "Implementar API",
-  "description": "Criar endpoints de tarefas",
-  "assignee": "João",
-  "storyPoints": 5,
-  "status": "To Do"
-}
-🛠️ Deploy
-Se desejar hospedar no Heroku, certifique-se de ter o arquivo Procfile corretamente configurado com:
-
-makefile
-Copiar
-Editar
-web: python app.py
-E siga o processo padrão de deploy para o Heroku.
-
-📌 Notas
-Esta API não possui autenticação com tokens ou JWT. É recomendável adicionar segurança adicional em ambientes de produção.
-
-O banco de dados é SQLite, ideal para testes e desenvolvimento local.
-
-📬 Contato
-Desenvolvido por [Seu Nome]. Contribuições e sugestões são bem-vindas!
-
-bash
-Copiar
-Editar
+## 📬 Contato
+Desenvolvido por Robson Calheira. Contribuições e sugestões são bem-vindas!
 
 Se quiser, posso adaptar para português/informal, ou adicionar instruções específicas para o Heroku, Docker, ou autenticação via JWT. Deseja algo mais?
 
